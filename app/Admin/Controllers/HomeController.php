@@ -73,8 +73,13 @@ class HomeController extends Controller
                     $cols=['title','price','brand','category'];
                     $pp=product::orderBy("id")->take(5)->get();
                     $r=[];
+
                     foreach($pp as $p){
-                     $r[]=[$p->title,$p->regular_price,$p->category->name,$p->brand->name];
+
+                        if($p && $p->category){
+                             $r[]=[$p->title,$p->regular_price,$p->category->name,$p->brand->name];
+                        }
+                    
                     }
                     //$pr=array_column($pp,'title','regular_price','category_id','brand_id');
                     $table = new Table($cols, $r);

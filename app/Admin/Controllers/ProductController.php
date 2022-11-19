@@ -8,11 +8,17 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Models\category;
+use App\Models\attributes;
 use App\Models\brand;
+use App\Models\faq;
 use App\Models\poroductSeries;
+use App\Models\productVariant;
+use App\Models\productVariantOptions;
 use Encore\Admin\Widgets\InfoBox;
 use Encore\Admin\Widgets\Collapse;
 use Encore\Admin\Layout\Content;
+use App\Models\brandcategory;
+use App\Admin\Actions\ProductController\Replicate;
 
 
 class ProductController extends AdminController
@@ -34,40 +40,85 @@ class ProductController extends AdminController
 
          
         $grid = new Grid(new product());
+         
          $grid->header(function($query){
             $url=url('admin/ImportProducts');
             $url1=url('admin/deals');
-             return "<a href='".$url."' class='btn btn-primary btn-lg' target='_blank'>Upload CSV & Import CSV  &nbsp;<i class='fa fa-upload'><i></a> &nbsp;&nbsp;&nbsp;<a href='".$url1."' class='btn btn-info btn-lg' target='_blank'>Product Deals &nbsp;<i class='fa fa-gift'><i></a>";
+            $url2=url('admin/categoryOrder');
+        
+             return "<a href='".$url."' class='btn btn-primary btn-lg' target='_blank'>Upload CSV & Import CSV  &nbsp;<i class='fa fa-upload'><i></a> &nbsp;&nbsp;&nbsp;<a href='".$url1."' class='btn btn-info btn-lg' target='_blank'>Product Deals &nbsp;<i class='fa fa-gift'><i></a>&nbsp;&nbsp;&nbsp;<a href='".$url2."' class='btn btn-info btn-lg' target='_blank'>Category Order &nbsp;<i class='fa fa-category'><i></a>";
          });
         
-            $categories=category::all()->toArray();
+   
+            $categories=category::whereNull('parent_id')->get()->toArray();
             $cats=array_column($categories,'name','id');
+            $categories1=category::whereNotNull('parent_id')->get()->toArray();
+            $cats1=array_column($categories1,'name','id');
+
             $brands=brand::all()->toArray();
             $brands=array_column($brands,'name','id');
+            $brandcats=brandcategory::whereNull('parent_id')->get()->toArray();
+            $brandcats=array_column($brandcats,'name','id');
+            $brandcats1=brandcategory::whereNotNull('parent_id')->get()->toArray();
+            $brandcats1=array_column($brandcats1,'name','id');
             $srs=poroductSeries::all()->toArray();
             $psrs=array_column($srs,'name','id');
 
+ $grid->filter(function($filter) use($cats,$cats1,$brands){
+
+    // Remove the default id filter
+    $filter->disableIdFilter();
+
+    // Add a column filter
+    $filter->like('title', 'name');
+     $filter->equal('category_id')->select($cats);
+     $filter->equal('subcategory_id')->select($cats1);
+     $filter->equal('brand_id')->select($brands);
+
+});
 
         // $grid->column('id', __('Id'));
         $grid->column('title', __('Title'))->filter("like");
         // $grid->column('slug', __('Slug'));
         $grid->column('sku', __('Sku'));
-        $grid->column('category.name', __('Category'))->filter($cats);
+        $grid->maincategory_id('Parent Category')->display(function($maincategory_id) {
+            $c=Category::find($maincategory_id);
+            if($c){
+                return $c->name;
+            }
+            return "";
+        })->filter($cats);
+        $grid->category_id('category', __('Category'))->display(function($category_id) {
+    return Category::find($category_id)->name;
+})->filter($cats1);
+      
         $grid->column('brand.name', __('Brand'))->filter($brands);
-        $grid->column('series.name', __('Series'))->filter($srs);
+          $grid->column('brandcategory_id', __('Brand cat'))->display(function($category_id) {
+            $b=brandcategory::find($category_id);
+            if($b){
+                return $b->name;
+            }
+    return "";
+})->filter($brandcats); 
+
+          $grid->column('brand_subcategory', __('Brand sub cat'))->display(function($category_id) {
+            $b=brandcategory::find($category_id);
+            if($b){
+                return $b->name;
+            }
+    return "";
+})->filter($brandcats1); 
+    //    $grid->column('series.name', __('Series'))->filter($srs);
         $grid->column('regular_price', __('Price'))->filter('range');
-        $grid->column('discount', __('Discount'));
+        //$grid->column('discount', __('Discount'));
         $grid->column('stock', __('Stock'));
-        // $grid->column('sell_price', __('Sell price'));
-        // $grid->column('description', __('Description'));
-        // $grid->column('short_description', __('Short description'));
-        // $grid->column('meta_description', __('Meta description'));
-        $grid->column('warranty', __('Warranty'));
+        
+        //$grid->column('warranty', __('Warranty'));
         $states = [
             'on' => ['value' => '1', 'text' => 'open', 'color' => 'primary'],
             'off' => ['value' => '0', 'text' => 'close', 'color' => 'default'],
         ];
-        $grid->column('status', __('Status'))->switch($states);
+        //$grid->column('status', __('Status'))->switch($states);
         $states = [
             'on' => ['value' => '1', 'text' => 'open', 'color' => 'primary'],
             'off' => ['value' => '0', 'text' => 'close', 'color' => 'default'],
@@ -80,6 +131,11 @@ class ProductController extends AdminController
         
         // });
 
+     
+$grid->actions(function ($actions) {
+    $actions->add(new Replicate);
+});
+      
         return $grid;
     }
 
@@ -130,6 +186,17 @@ class ProductController extends AdminController
             $property->property_value();
             
         });
+        $show->variant('variant', function ($variant) {
+            
+            $variant->setResource('/admin/variants');
+            $variant->attribute_name();
+            $variant->attribute_value();
+            $variant->sku();
+            $variant->regular_price();
+            $variant->sell_price();
+            $variant->stock();
+            
+        });
         $show->divider("Product Attributes");
        // $show->field("property.property_name");
         $show->field('warranty', __('Warranty'));
@@ -149,44 +216,107 @@ class ProductController extends AdminController
     {
         
         $form = new Form(new product());
-       
-        $form->tab('Basic info', function ($form) {
-        $categories=category::all()->toArray();
+        
+        $uris=$_SERVER['REQUEST_URI']; 
+        $uris=explode("/",$uris);
+        $ul=count($uris);
+        $action=$uris[$ul-1];
+        $pmodel=null;
+        if($action=="edit"){
+            $prid=$uris[$ul-2];
+            $pmodel=product::find($prid);
+             
+        }
+        
+        
+        $form->tab('Basic info', function ($form) use($pmodel) {
+         if($pmodel){
+            $subcategories=category::whereNotNull('parent_id')->where(['id'=>$pmodel->category_id])->get()->toArray();
+            $bcats=brandcategory::whereNull('parent_id')->where(['id'=>$pmodel->brandcategory_id])->pluck('name','id');
+            $bcats=brandcategory::whereNull('parent_id')->pluck('name','id');
+            $bcats1=brandcategory::whereNotNull('parent_id')->where(['id'=>$pmodel->brand_subcategory])->pluck('name','id');
+         }else{
+            $subcategories=category::whereNotNull('parent_id')->get()->toArray();
+            $bcats=brandcategory::whereNull('parent_id')->pluck('name','id');
+            $bcats1=brandcategory::whereNotNull('parent_id')->pluck('name','id');
+         }   
+
+
+        
+        $categories=category::whereNull('parent_id')->get()->toArray();
+        //$subcategories=category::whereNotNull('parent_id')->get()->toArray();
         $cats=array_column($categories,'name','id');
+        $subcats=array_column($subcategories,'name','id');
         $brands=brand::all()->toArray();
         $brands=array_column($brands,'name','id');
+        //$bcats=brandcategory::whereNull('parent_id')->pluck('name','id');
+        //$bcats1=brandcategory::whereNotNull('parent_id')->pluck('name','id');
         $srs=poroductSeries::all()->toArray();
         $psrs=array_column($srs,'name','id');
         $form->text('title', __('Title'));
         $form->text('slug', __('Slug'));
         $form->text('sku', __('Sku'));
-        $form->select('category_id', __('Product Category'))->options($cats);
-        $form->select('brand_id', __('Product Brand'))->options($brands);
+        $form->select('maincategory_id', __('Parent Category'))->options($cats)->load('category_id', url('admin/getchildcategory'));
+         $form->select('category_id', __('Product Category'))->options($subcats);
+        
+        $form->select('brand_id', __('Product Brand'))->options($brands)->load('brandcategory_id', url('admin/getbrandcategory'));
+
+        $form->select('brandcategory_id', __('Brand Category'))->options($bcats)->load('brand_subcategory', url('admin/getbrandsubcategory'));
+        $form->select('brand_subcategory', __('Brand Sub Category'))->options($bcats1);
+        $form->tags('tags', __('tags'));
         $form->select('series_id', __('Product Series'))->options($psrs);
         $form->radio('featured', __('Featured Product'))->options(['1'=>'Yes','0'=>'No'])->default('0');
         $form->radio('bestseller', __('Bestseller Product'))->options(['1'=>'Yes','0'=>'No'])->default('0');
         $form->number('regular_price', __('Regular price'));
-        $form->number('discount', __('Discount'));
+       // $form->number('discount', __('Discount'));
         $form->number('stock', __('Stock'));
         $form->number('sell_price', __('Sell price'));
         $form->ckeditor('description', __('Description'));
         $form->ckeditor('short_description', __('Short description'));
-        $form->textarea('meta_description', __('Meta description'));
+        $form->ckeditor('meta_description', __('Meta description'));
+        $form->file('pdf', __('Product Pdf '))->removable();
         $form->text('warranty', __('Warranty'));
         $form->select('status', __('Status'))->options(["1"=>"Enabled","0"=>'Draft']);
        
         
         })->tab('Product Images', function ($form) {
-            $imf=$form->multipleImage("images", "Product Gallery")->pathColumn('image')->move('public/products/');
+            $form->image('defaultpic', __('Default Pic'))->uniqueName()->move('public/products/')->removable();
+            $imf=$form->multipleImage("images", "Product Gallery")->pathColumn('image')->move('public/products/')->removable();
         
         })->tab('Product Attributes', function ($form) {
             $form->hasMany('property',"Add Product Attributes", function (Form\NestedForm $form) {
                 $form->text('property_name',"Product Attribute Name");
                 $form->text('property_value',"Product Attribute Value");
+            });
+               
+            })->tab('Product Variants', function ($form) {
+                 $atts=attributes::all()->pluck("property_name",'property_name');
+                $form->hasMany('variant',"Add Product Variant", function (Form\NestedForm $form) use($atts){
+                
+                $form->select('attribute_name',"Variation Attribute Name")->options($atts);
+                $form->text('attribute_value',"Variation Attribute Values")->help("example(Values):4Gb Ram I3 Processer,4g Gb ,Red");
+                
+                $form->text('sku',"Variant sku");
+                $form->number('regular_price',"Regular Price");
+                $form->text('sell_price',"Sell Price");
+                $form->number('stock',"Stock");
+                $form->image('defaultpic', __('Default Pic'))->uniqueName()->move('public/products/')->removable();
+                 
+
                
             });
         
-        });  
+        })->tab('faq', function ($form) {
+                
+                $form->hasMany('faq',"Add Product Variant", function (Form\NestedForm $form){
+                $form->textarea('question', __('Question'));
+                $form->textarea('answer', __('Answer'));
+                 
+
+               
+            });
+        
+        });
          
        
         

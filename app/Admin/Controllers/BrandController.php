@@ -9,6 +9,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
+use App\Models\brandcategory;
 
 class BrandController extends AdminController
 {
@@ -26,6 +27,7 @@ class BrandController extends AdminController
      */
     protected function grid()
     {
+        echo "<style> .column-logo img{ width:50px;}</style>";
         $grid = new Grid(new Brand());
         $grid->filter(function($filter){
 
@@ -60,6 +62,15 @@ class BrandController extends AdminController
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('slug', __('Slug'));
+        $show->brandcategories('brandcategories', function ($brandcategories) {
+            
+            $brandcategories->setResource('/admin/brandcategories');
+            $brandcategories->name();
+            $brandcategories->slug();
+
+            
+            
+        });
         $show->field('logo', __('Logo'))->image();
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
@@ -73,13 +84,21 @@ class BrandController extends AdminController
      * @return Form
      */
     protected function form()
-    {
+    {   
         $form = new Form(new Brand());
-
+         $form->tab('Basic info', function ($form) {
         $form->text('name', __('Name'));
+        
         $form->text('slug', __('Slug'));
-        $form->image('logo', __('Logo'))->uniqueName()->move('public/brands/');;
+        $form->image('logo', __('Logo'))->uniqueName()->move('public/brands/')->removable();
+        
+        })->tab('Category', function ($form) {
+            $form->hasMany('brandcategories',"Add categories", function (Form\NestedForm $form) {
+                $form->text('name',"Category Name");
+                $form->text('slug',"Slug");
+            });
 
+         });  
         return $form;
     }
 }

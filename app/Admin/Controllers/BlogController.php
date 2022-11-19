@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
+use App\Http\Requests;
 
 class BlogController extends AdminController
 {
@@ -77,4 +79,40 @@ class BlogController extends AdminController
 
         return $form;
     }
+
+    public function uploadImage(Request $request){
+    
+    if($request->hasFile('upload')) {
+        //get filename with extension
+        $type=isset($request->type) ? $request->type : 'image';
+        $filenamewithextension = $request->file('upload')->getClientOriginalName();
+   
+        //get filename without extension
+        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+   
+        //get file extension
+        $extension = $request->file('upload')->getClientOriginalExtension();
+   
+        //filename to store
+        $filenametostore = $filename.'_'.time().'.'.$extension;
+   
+        //Upload File
+       // $request->file('upload')->storeAs('/', $filenametostore);
+       $request->file('upload')->move(public_path('assets'), $filenametostore);
+ 
+        $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+        $url = asset('assets/'.$filenametostore); 
+        $msg = 'Image successfully uploaded'; 
+        $re = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+        if($type!="image"){
+          return response()->json([ 'fileName' => $filenametostore, 'uploaded' => 1, 'url' => $url, ]);
+      }else{
+         //return response()->json(['data'=>$re]);
+      
+        // Render HTML output 
+        @header('Content-type: text/html; charset=utf-8'); 
+        echo $re;
+    }
+    }
+  }
 }

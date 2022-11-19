@@ -29,6 +29,7 @@ class WidgetController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
         $grid->column('content', __('Content'));
+        $grid->column('image', __('image'))->image();
        
         return $grid;
     }
@@ -46,6 +47,7 @@ class WidgetController extends AdminController
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('content', __('Content'));
+         $show->field('image', __('image'))->image();
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -63,6 +65,7 @@ class WidgetController extends AdminController
 
         $form->text('name', __('Unique Widget Name'));
         $form->textarea('content', __('Content'));
+        $form->image('image', __('Image'))->uniqueName()->move('public/brands/public/brands/widgets/')->removable();
 
         return $form;
     }

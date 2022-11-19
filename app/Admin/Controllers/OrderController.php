@@ -33,8 +33,8 @@ class OrderController extends AdminController
         $plist=array_column($prd,'title','id');
         $grid->column('id', __('Id'));
         $grid->column('customer.name', __('Customer'))->filter($userlist);
-        $grid->column('product_id', __('Product id'))->filter($plist);
         $grid->column('quantity', __('Quantity'));
+        $grid->column('payment.payment_id', __('Payment Id'));
         $grid->column('amount', __('Amount'))->filter('range');
         $grid->column('status', __('Status'))->filter(['4'=>"completed","3"=>"transit"]);
         $grid->column('created_at', __('Created at'))->filter("range","date");
@@ -54,10 +54,38 @@ class OrderController extends AdminController
         $show = new Show(order::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('customer_id', __('Customer id'));
-        $show->field('product_id', __('Product id'));
+        $show->field('customer.name', __('Customer id'));
         $show->field('quantity', __('Quantity'));
-        $show->field('amount', __('Amount'));
+        $show->items('items')->as(function ($items) {
+            $s="<ul class='list-group'>";
+            if($items){
+                  foreach($items as $item){
+                   $p= product::find($item->product_id);
+                    $s=$s."<li class='list-group-item'> ".$p->title." (Quantity :".$item->quantity.") </li>";
+                  }
+            }
+            return $s;
+           })->unescape();
+
+     $show->payment('payment', function ($payment) {
+            $payment->setResource('/admin/payment');
+            $payment->payment_id();
+            $payment->signature_id();
+            $payment->created_at();
+            
+        });
+
+        $show->address('address', function ($address) {
+           // print_r($property);
+            $address->setResource('/admin/address');
+            $address->name();
+            $address->phone();
+            
+        });
+
+        
+
+        $show->field('amount', __('Amount(INR)'));
         $show->field('status', __('Status'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));

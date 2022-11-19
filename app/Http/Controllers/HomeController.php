@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\product;
 use App\Models\category;
 use App\Models\brand;
+use Illuminate\Support\Facades\Auth;
+use App\Models\order;
+use App\Models\User;
+use App\Models\common;
 
 class HomeController extends Controller
 {
@@ -26,10 +30,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['featured_products']=product::where(['featured'=>'1'])->get();
-        $data['featured_products']=product::where(['bestseller'=>'1'])->get();
-        $data['cats']=category::all();
-        $data['brands']=brand::all();
+         $data=common::commonData('category');
+         
+         $userid=Auth::id();
+         $data['userid']=$userid;
+         $data['orders']=order::orderBy("id","asc")->get();
+
+         $data['user']=Auth::user();
+         
+    
         return view('home',$data);
     }
 
@@ -39,6 +48,9 @@ class HomeController extends Controller
         $data['featured_products']=product::where(['bestseller'=>'1'])->get();
         $data['cats']=category::all();
         $data['brands']=brand::all();
+        $br=brand::all()->chunk(3);
+    $data['brandlinks']=$br;
+    
         return view('welcome',$data);
     }
 }

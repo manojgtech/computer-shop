@@ -1,820 +1,247 @@
-@extends('layouts.app')
-
+@extends('layouts.home')
 @section('content')
-
-<style>
-/*Main CSS*/
-
-
-/*Login Signup Page*/
-a:focus,a:hover,a{
-    outline:none;
-    text-decoration: none;
-}
-li,ul{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.header-top i {
-    font-size: 18px;
-}
-.bg-image {
-    background: url(../images/background-login.jpg) no-repeat 0 0 / cover;
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: table;
-}
-
-.login-header {
-    display: inline-block;
-    width: 100%;
-    background: #0e1a35;
-}
-
-.login-signup {
-    display: table-cell;
-    vertical-align: middle;
-    width: 100%;
-}
-
-.login-logo img {
-    cursor: pointer;
-    max-width: 171px;
-    padding: 23px 15px 22px;
-    width: 100%;
-}
-
-.login-header .navbar-right {
-    margin-right: 0px;
-}
-
-.login-header .nav-tabs > li.active > a,
-.login-header .nav-tabs > li.active > a:focus,
-.login-header .nav-tabs > li.active > a:hover {
-    background-color: transparent;
-    border: none;
-    color: #fff;
-}
-
-.login-header .nav-tabs > li > a {
-    border: medium none;
-    border-radius: 0;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 48px;
-    padding: 15px 30px;
-    color: #fff;
-}
-
-.login-header .nav-tabs {
-    border-bottom: none;
-}
-
-.login-header .nav-tabs > li {
-    margin-bottom: 0px;
-}
-
-.login-header .nav > li > a:focus,
-.login-header .nav > li > a:hover {
-    background: none;
-    text-decoration: none;
-}
-
-.login-header .nav-tabs > li.active {
-    border-bottom: 6px solid #5584ff;
-}
-
-.login-inner h1 {
-    color: #8492af;
-    font-size: 48px;
-    font-weight: 300;
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-.login-inner h1 span {
-    color: #5584ff;
-}
-
-.login-form {
-    text-align: center;
-}
-
-.login-form input {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-    border-color: -moz-use-text-color -moz-use-text-color #d4d9e3;
-    border-image: none;
-    border-style: none none solid;
-    border-width: medium medium 1px;
-    font-size: 13px;
-    font-weight: 300;
-    width: 100%;
-    color: #8492af;
-    padding: 15px 50px;
-    font-size: 17px;
-    max-width: 550px;
-}
-
-.login-form label {
-    margin-bottom: 30px;
-    width: 100%;
-}
-
-.user input {
-    background: rgba(0, 0, 0, 0) url("../images/user.png") no-repeat scroll 7px 12px;
-}
-
-.pass input {
-    background: rgba(0, 0, 0, 0) url("../images/password.png") no-repeat scroll 7px 12px;
-}
-
-.mail input {
-    background: rgba(0, 0, 0, 0) url("../images/mail.png") no-repeat scroll 4px 12px;
-}
-
-.login-signup .tab-content {
-    background: #ffffff none repeat scroll 0 0;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
-    display: inline-block;
-    margin-top: -8px;
-    width: 100%;
-}
-
-.form-btn {
-    background: #5584ff none repeat scroll 0 0;
-    border: medium none;
-    border-radius: 100px;
-    color: #ffffff;
-    font-weight: 400;
-    max-width: 250px;
-    padding: 10px 0;
-    position: relative;
-    width: 100%;
-    margin: 40px 0;
-    box-shadow: 0 2px 8px #d2d2d2;
-    -moz-box-shadow: 0 2px 8px #d2d2d2;
-    -webkit-box-shadow: 0 2px 8px #d2d2d2;
-}
-
-.form-btn::before {
-    content: "";
-    font-family: FontAwesome;
-    position: absolute;
-    right: 17px;
-    top: 9px;
-}
-
-.form-details {
-    padding: 35px 0;
-}
-
-.tab-content .tab-pane {
-    padding: 70px 0;
-}
-
-
-/*Login Signup Page*/
-
-
-/*Home Page*/
-
-.home {
-    background: #f6f7fa;
-}
-
-#navigation {
-    background: #0e1a35;
-}
-
-#navigation {
-    padding: 0;
-}
-
-.display-table {
-    display: table;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-}
-
-.display-table-row {
-    display: table-row;
-    height: 100%;
-}
-
-.display-table-cell {
-    display: table-cell;
-    float: none;
-    height: 100%;
-}
-
-.v-align {
-    vertical-align: top;
-}
-.logo img {
-    max-width: 180px;
-    padding: 16px 0 17px;
-    width: 100%;
-}
-
-.header-top {
-    margin: 0;
-    padding-top: 2px;
-}
-
-.header-top img {
-    border-radius: 50%;
-    max-width: 48px !important;
-    width: 100%;
-}
-
-.add-project {
-    background: #5584ff none repeat scroll 0 0;
-    border-radius: 100px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 10px 27px 10px 45px;
-    position: relative;
-}
-
-.header-rightside .nav > li > a:focus,
-.header-rightside .nav > li > a:hover {
-    background: none;
-    text-decoration: none;
-}
-
-.add-project::before {
-    background: rgba(0, 0, 0, 0) url("../images/plus.png") no-repeat scroll 0 0;
-    content: "";
-    ;
-    height: 12px;
-    left: 17px;
-    position: absolute;
-    top: 12px;
-    width: 12px;
-}
-
-.add-project:hover {
-    color: #ffffff;
-}
-
-.header-top i {
-    color: #0e1a35;
-}
-
-.icon-info {
-    position: relative;
-}
-.navi i {
-    font-size: 20px;
-}
-.label.label-primary {
-    border-radius: 50%;
-    font-size: 9px;
-    left: 8px;
-    position: absolute;
-    top: -9px;
-}
-
-.icon-info .label {
-    border: 2px solid #ffffff;
-    font-weight: 500;
-    padding: 3px 5px;
-    text-align: center;
-}
-
-.header-top li {
-    display: inline-block;
-    text-align: center;
-}
-
-.header-top .dropdown-toggle {
-    color: #0e1a35;
-}
-
-.header-top .dropdown-menu {
-    border: medium none;
-    left: -85px;
-    padding: 17px;
-}
-.view {
-    background: #5584ff none repeat scroll 0 0;
-    border-radius: 100px;
-    color: #ffffff;
-    display: inline-block;
-    font-size: 14px;
-    font-weight: 600;
-    margin-top: 10px;
-    padding: 10px 15px;
-}
-
-.navbar-content > span {
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.img-responsive {
-    width: 100%;
-}
-#navigation{
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-.search input {
-    border: none;
-    font-size: 15px;
-    padding: 15px 9px;
-    width: 100%;
-    background: rgba(0, 0, 0, 0) url("../images/search.png") no-repeat scroll 99% 12px;
-    color: #8492af;
-}
-
-header {
-    background: #ffffff none repeat scroll 0 0;
-    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
-    display: inline-block !important;
-    line-height: 23px;
-    padding: 15px;
-    transition: all 0.5s ease 0s;
-    width: 100%;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
-.logo {
-    text-align: center;
-}
-
-.navi a {
-    border-bottom: 1px solid #0d172e;
-    border-top: 1px solid #0d172e;
-    color: #ffffff;
-    display: block;
-    font-size: 17px;
-    font-weight: 500;
-    padding: 28px 20px;
-    text-decoration: none;
-}
-
-.navi i {
-    margin-right: 15px;
-    color: #5584ff;
-}
-
-.navi .active a {
-    background: #122143;
-    border-left: 5px solid #5584ff;
-    padding-left: 15px;
-}
-
-.navi a:hover {
-    background: #122143 none repeat scroll 0 0;
-    border-left: 5px solid #5584ff;
-    display: block;
-    padding-left: 15px;
-}
-
-.navbar-default {
-    background-color: #ffffff;
-    border-color: #ffffff;
-}
-
-.navbar-toggle {
-    border: none;
-}
-
-.navbar-default .navbar-toggle:focus,
-.navbar-default .navbar-toggle:hover {
-    background-color: rgba(0, 0, 0, 0);
-}
-
-.navbar-default .navbar-toggle .icon-bar {
-    background-color: #0e1a35;
-}
-
-.circle-logo {
-    margin: 0 auto;
-    max-width: 30px !important;
-    text-align: center;
-}
-.hidden-xs{
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
-.user-dashboard {
-    padding: 0 20px;
-}
-
-.user-dashboard h1 {
-    color: #0e1a35;
-    font-size: 30px;
-    font-weight: 500;
-    margin: 0;
-    padding: 21px 0;
-}
-.sales {
-    background: #ffffff none repeat scroll 0 0;
-    border: 1px solid #d4d9e3;
-    display: inline-block;
-    padding: 15px;
-    width: 100%;
-}
-.sales button {
-    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-    border: 1px solid #dadee7;
-    border-radius: 100px;
-    font-size: 15px;
-    letter-spacing: 0.5px;
-    padding-right: 32px;
-    color: #0e1a35;
-}
-
-.sales button::before {
-    content: "";
-    font-family: FontAwesome;
-    position: absolute;
-    right: 12px;
-    top: 11px;
-}
-.sales  .btn-group {
-    float: right;
-}
-.sales h2 {
-    color: #8492af;
-    float: left;
-    font-size: 21px;
-    font-weight: 600;
-    margin: 0;
-    padding: 9px 0 0;
-}
-.btn.btn-secondary.btn-lg.dropdown-toggle > span {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-.sales .dropdown-menu{
-    margin: 0px;
-    padding: 0px;
-    border: 0px;
-    border-radius: 8px;
-    width: 100%;
-    color: #0e1a35;
-}
-.sales .btn-group.open .dropdown-toggle, .btn.active, .btn:active{
-    box-shadow: none;
-}
-.sales .dropdown-menu > a {
-    color: #0e1a35;
-    display: inline-block;
-    font-weight: 800;
-    padding: 9px 0;
-    text-align: center;
-    width: 100%;
-}
-#my-cool-chart svg {
-    width: 100%;
-}
-.sales .dropdown-menu > a:hover{
-    color: #5584FF;   
-}
-.shield-buttons {
-    display: none;
-}
-.close, .close:focus, .close:hover {
-    color: #fff;;
-    opacity: 1;
-    text-shadow: none;
-}
-.modal-body input {
-    border: 1px solid #d4d9e3;
-    font-size: 14px;
-    font-weight: 300;
-    margin: 5px 0;
-    padding: 14px 10px;
-    width: 100%;
-    color: #8492af;
-}
-.modal-body textarea {
-    border: 1px solid #d4d9e3;
-    font-size: 14px;
-    font-weight: 300;
-    height: 200px;
-    margin-top: 5px;
-    padding: 9px 10px;
-    width: 100%;
-    color: #8492af;
-}
-.modal-header.login-header h4 {
-    color: #ffffff;
-}
-.modal-footer .add-project {
-    background: #5584ff none repeat scroll 0 0;
-    border: medium none;
-    border-radius: 100px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 10px 30px;
-    position: relative;
-}
-.modal-footer .add-project::before{display: none;}
-.modal-footer {
-    border: 0 none;
-    padding: 10px 15px 26px;
-    text-align: right;
-}
-.cancel {
-    background: #0E1A35     ;
-    border: medium none;
-    border-radius: 100px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 10px 30px;
-    position: relative;
-    
-}
-.modal{
-    top: 20%; 
-}
-.modal-header .close {
-    margin-top: 2px;
-}
-.search input:focus{
-    border-bottom: 1px solid #BDC4D4;
-    line-height:22px;
-    transition: 0.1s all;
-}
-.modal-header.login-header {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-/*Main CSS*/
-
-
-
-
-
-
-@media only screen and (max-device-width: 767px) {
-    .login-logo img {
-        margin: 0 auto;
-    }
-    .login-details .nav-tabs > li {
-        text-align: center;
-        width: 50%;
-    }
-    .login-signup .login-inner h1 {
-        font-size: 26px;
-        margin-bottom: 0;
-        margin-top: 10px;
-    }
-    .login-inner .login-form input {
-        font-size: 15px;
-        max-width: 100%;
-        padding: 15px 45px;
-    }
-    .login-inner .form-details {
-        padding: 25px;
-    }
-    .login-inner .login-form label {
-        margin-bottom: 20px;
-        width: 100%;
-    }
-    .login-inner .form-btn {
-        margin: 0;
-        max-width: 180px;
-    }
-    .tab-content .tab-pane {
-        padding: 20px 0;
-    }
-    #navigation .navi a {
-        font-size: 14px;
-        padding: 20px;
-        text-align: center;
-    }
-    #navigation .navi i {
-        margin-right: 0px;
-    }
-    #navigation .navi a:hover,
-    #navigation .navi .active a {
-        background: #122143 none repeat scroll 0 0;
-        border-left: none;
-        display: block;
-        padding-left: 20px;
-    }
-    header .header-top img {
-        max-width: 38px !important;
-    }
-    .v-align header {
-        padding: 12px 15px;
-    }
-    header .header-top li {
-        padding-left: 13px;
-        padding-right: 6px;
-    }
-    .navbar-default .navbar-toggle {
-        border-color: rgba(0, 0, 0, 0);
-    }
-    .navbar-header .navbar-toggle {
-        float: left;
-        margin: 0;
-        padding: 0;
-        top: 12px;
-    }
-    button,
-        html [type="button"],
-        [type="reset"],
-        [type="submit"] {
-            outline: medium none;
-    }
-    .user-dashboard .sales h2 {
-        color: #8492af;
-        float: left;
-        font-size: 14px;
-        font-weight: 600;
-        margin: 0;
-        padding: 13px 0 0;
-}
-    .user-dashboard .btn.btn-secondary.btn-lg.dropdown-toggle > span {
-        font-size: 11px;
-}
-    .user-dashboard .sales button {
-        font-size: 11px;
-        padding-right: 23px;
-}  
-    .user-dashboard .sales h2 {
-    font-size: 12px;
-}
-.gutter{
-    padding: 0;
-}
-}
-
-@media only screen and (max-device-width: 992px) {
-    header .header-top li {
-        padding-left: 20px !important;
-        padding-right: 0;
-}
-    header .logo img {
-        max-width: 125px !important;
-}
-
-}
-
-@media only screen and (min-device-width: 767px) and (max-device-width: 998px){
-      .user-dashboard .header-top {
-        padding-top: 5px;
-}
-    .user-dashboard .header-rightside {
-        display: inline-block;
-        float: left;
-        width: 100%;
-}
-    .user-dashboard .header-rightside .header-top img {
-        max-width: 41px !important;
-} 
-    .user-dashboard .sales button {
-    font-size: 10px;
-}
-    .user-dashboard .btn.btn-secondary.btn-lg.dropdown-toggle > span {
-    font-size: 12px;
-}
-    .user-dashboard .sales h2 {
-    font-size: 15px;
-}
-}
-@media only screen and (min-device-width:998px) and (max-device-width: 1350px){
-        #navigation .logo img {
-    max-width: 130px;
-    padding: 16px 0 17px;
-    width: 100%;
-}
-}
-
-</style>
-
-    <div class="container-fluid display-table">
-        <div class="row display-table-row">
-            <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
-                <div class="logo">
-                    <a hef="home.html">
-                    {{ Auth::user()->name }}
-
-                    </a>
-                </div>
-                <div class="navi">
-                    <ul>
-                        <li class="active"><a href="{{route('user-dashboard')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Dashboard</span></a></li>
-                        <li class="active"><a href="{{route('user-orders')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Orders</span></a></li>
-                        <li class="active"><a href="{{route('user-history')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Search history</span></a></li>
-                        <li class="active"><a href="{{route('user-history')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Search history</span></a></li>
-                        <li class="active"><a href="{{route('user-history')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Search history</span></a></li>
-                        <li class="active"><a href="{{route('user-history')}}"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Search history</span></a></li>
-                       
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-10 col-sm-11 display-table-cell v-align">
-                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<main class="category">
+    <div class="category-header  d-flex justify-content-center align-items-center">
+  
+        <h3 class="my-4 display-5 fw-bold">Welcome {{$user->name}}</h3>
+
+    </div>
+    <div class="product-listing">
+        <section class="product-listing-area">
+            <div class="container">
                 <div class="row">
-                    
-                </div>
-                <div class="user-dashboard">
-                    <h1>Hello, {{ Auth::user()->name }}</h1>
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+<div class="col-md-12">
+  <ul class="nav nav-tabs" id="mytab" role="tablist">
+    <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="tab" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</button>
+</li>
+<li class="nav-item" role="presentation">
+    <button class="nav-link" id="v-pills-orders-tab" data-bs-toggle="tab" data-bs-target="#v-pills-orders" type="button" role="tab" aria-controls="v-pills-orders" aria-selected="false">Orders</button>
+</li>
+<li class="nav-item" role="presentation">
+    <button class="nav-link" id="v-pills-wishlist-tab" data-bs-toggle="tab" data-bs-target="#v-pills-wishlist" type="button" role="tab" aria-controls="v-pills-wishlist" aria-selected="false">Wishlist</button>
+</li>
+<li class="nav-item" role="presentation">
+    <button class="nav-link" id="v-pills-message-tab" data-bs-toggle="tab" data-bs-target="#v-pills-message" type="button" role="tab" aria-controls="v-pills-message" aria-selected="false">Notifications</button>
+</li>
 
-                            <div class="sales">
-                                <h2>Your Sale</h2>
+<li class="nav-item" role="presentation">
+    <button class="nav-link" id="v-pills-contact-tab" data-bs-toggle="tab" data-bs-target="#v-pills-contact" type="button" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact & Support</button>
+</li>
 
-                                <div class="btn-group">
-                                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span>Period:</span> Last Year
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a href="#">2012</a>
-                                        <a href="#">2014</a>
-                                        <a href="#">2015</a>
-                                        <a href="#">2016</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-7 col-xs-12 gutter">
+  </ul>
 
-                            <div class="sales report">
-                                <h2>Report</h2>
-                                <div class="btn-group">
-                                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span>Period:</span> Last Year
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a href="#">2012</a>
-                                        <a href="#">2014</a>
-                                        <a href="#">2015</a>
-                                        <a href="#">2016</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+             @if(session()->has('message'))
+             <div class="alert alert-success">
+               {{ session()->get('message') }}
+             </div>
+             @endif
+
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+       
+           <div class="card row">
+            <div class="card-header">
+                <h5 class="card-title">Profile</h5>
+                
+             @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+            </div>
+            <div class="card-body">
+               <form class="form" role="form" method="post" action="{{url('update-profile')}}">
+                @csrf
+                <input type="hidden" name="id" value="{{isset($userid) ? $userid : '' ;}}">
+                <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Name</label>
+                      <input type="name" name="name" class="form-control" value="{{$user->name}}" id="uname" placeholder="name" required>
                     </div>
-                </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                      <input type="email" name="email" readonly class="form-control" id="uemail" value="{{$user->email}}" placeholder="name@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Phone</label>
+                      <input type="tel" class="form-control" name="phone" value="{{$user->phone}}" id="uphone" placeholder="phone" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlTextarea1" class="form-label">Current Password</label>
+                       <input type="password" name="cpwd" class="form-control" value="" id="cupassword" placeholder=" current passsword">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlTextarea1" class="form-label">New Password</label>
+                       <input type="password"  name="npwd" class="form-control" value="" id="nupassword" placeholder=" new passsword" >
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update profile</button><a href="{{url('password/reset')}}" role='button' class="btn btn-warning">Forgot Password</a>
+               </form>
             </div>
         </div>
 
+              
     </div>
+    <div class="tab-pane fade" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
+         <div class="card row">
+            <div class="card-header">
+                <h5 class="card-title">Orders</h5>
+            </div>
+            <div class="card-body">
+                @if(count($orders))
+                <table class="table  table-hover table-sm" id="ordertable">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Order Id</th>
+                            <th>Products</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Transaction Id</th>
+                            <th>Status</th>
+                            <th>Order Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($orders as $order)
+                        @if($order)
+                        <tr>
+                            <td>{{$order->order_id}}</td>
+                            <td>
+                                @if($order->items)
+                                 @foreach($order->items as $item)
+                                    <span class="badge">{{$item->product ? $item->product->title:''}}</span>
+                                 @endforeach
+
+                                @endif
 
 
+                            </td>
+                            <td>{{$order->quantity}}</td>
+                            <td>{{$order->amount}}</td>
+                            <td>{{$order->transaction_id}}</td>
+                            <td>{{$order->status}}</td>
+                            <td>{{$order->created_at}}</td>
+                            <td><a href="" data-id="{{$order->id}}" data-user_id="{{$order->user_id}}">View</a> | <a href="" data-id="{{$order->id}}" data-user_id="{{$order->user_id}}">Cancel</a></td>
 
-    <!-- Modal -->
-    <div id="add_project" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+                        </tr>
+                        @endif
+                        @endforeach
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header login-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Add Project</h4>
-                </div>
-                <div class="modal-body">
-                            <input type="text" placeholder="Project Title" name="name">
-                            <input type="text" placeholder="Post of Post" name="mail">
-                            <input type="text" placeholder="Author" name="passsword">
-                            <textarea placeholder="Desicrption"></textarea>
+
+                    </tbody>
+                </table>
+                @endif
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="v-pills-wishlist" role="tabpanel" aria-labelledby="v-pills-wishlist-tab">
+        <div class="card row">
+            <div class="card-header">
+                <h5 class="card-title">Wishlist</h5>
+            </div>
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="v-pills-message" role="tabpanel" aria-labelledby="v-pills-message-tab">
+        <div class="card row">
+            <div class="card-header">
+                <h5 class="card-title">Messages</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                  <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">List group item heading</h5>
+                      <small>3 days ago</small>
                     </div>
-                <div class="modal-footer">
-                    <button type="button" class="cancel" data-dismiss="modal">Close</button>
-                    <button type="button" class="add-project" data-dismiss="modal">Save</button>
+                    <p class="mb-1">Some placeholder content in a paragraph.</p>
+                    <small>And some small print.</small>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">List group item heading</h5>
+                      <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Some placeholder content in a paragraph.</p>
+                    <small class="text-muted">And some muted small print.</small>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">List group item heading</h5>
+                      <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Some placeholder content in a paragraph.</p>
+                    <small class="text-muted">And some muted small print.</small>
+                  </a>
                 </div>
             </div>
-
         </div>
     </div>
 
-<script>
-    $(document).ready(function(){
-   $('[data-toggle="offcanvas"]').click(function(){
-       $("#navigation").toggleClass("hidden-xs");
-   });
-});
+     <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
+         <div class="card row">
+            <div class="card-header">
+                <h5 class="card-title">Support</h5>
+            </div>
+            <div class="card-body">
+               
+               <div class="container py-4">
 
-</script>
+  <!-- Bootstrap 5 starter form -->
 
+  <h5>Write us</h5>
+  <form id="contactForm" action="{{url('support-from')}}" method="post" >
+  @csrf
+                <input type="hidden" name="id" value="{{$userid}}">
+    <!-- Name input -->
+    <div class="mb-3">
+      <label class="form-label" for="name">Name</label>
+      <input class="form-control" name="name" id="name" type="text" placeholder="Name" value="{{$user->name}}" />
+    </div>
 
+    <!-- Email address input -->
+    <div class="mb-3">
+      <label class="form-label" for="emailAddress">Email Address</label>
+      <input class="form-control" name="email" id="emailAddress" type="email" value="{{$user->email}}"  placeholder="Email Address" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="emailAddress">Subject</label>
+      <input class="form-control" name="subject" id="emailAddress" type="text" placeholder="Subject" />
+    </div>
+
+    <!-- Message input -->
+    <div class="mb-3">
+      <label class="form-label" for="message">Message</label>
+      <textarea class="form-control" id="message" name="message" type="text" placeholder="Message" style="height: 10rem;"></textarea>
+    </div>
+
+    <!-- Form submit button -->
+    <div class="d-grid">
+      <button class="btn btn-primary btn-lg" type="submit">Submit</button>
+    </div>
+
+  </form>
+
+</div>
+            </div>
+        </div>
+     </div>
+    
+  </div>
+  
+  </div>
+</div>
+</div>
+</section>
+</div>
+</main>
 
 @endsection
