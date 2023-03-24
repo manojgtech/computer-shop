@@ -2,131 +2,140 @@
 
 @section('content')
 
-<main class="category">
-    <div class="category-header py-5 bg-light d-flex justify-content-center align-items-center">
-        <h3 class="my-4 display-5 fw-bold">Build Your PC</h3>
+<main class="product">
+    <style>
+        .circle-container {
+  position: relative;
+  /* 1 */
+  width: 20em;
+  height: 20em;
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+  /* 2 */
+  box-sizing: content-box;
+  /* 3 */
+  /*margin: 5em auto 0;*/
+  /*border: solid 1px tomato;*/
+}
+.circle-container > * {
+  /* 4 */
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6em;
+  height: 6em;
+  margin: -3em;
+}
+.circle-container > :nth-of-type(1) {
+  transform: rotate(36deg) translate(10em) rotate(-36deg);
+}
+.circle-container > :nth-of-type(2) {
+  transform: rotate(72deg) translate(10em) rotate(-72deg);
+}
+.circle-container > :nth-of-type(3) {
+  transform: rotate(108deg) translate(10em) rotate(-108deg);
+}
+.circle-container > :nth-of-type(4) {
+  transform: rotate(144deg) translate(10em) rotate(-144deg);
+}
+.circle-container > :nth-of-type(5) {
+  transform: rotate(180deg) translate(10em) rotate(-180deg);
+}
+.circle-container > :nth-of-type(6) {
+  transform: rotate(216deg) translate(10em) rotate(-216deg);
+}
+.circle-container > :nth-of-type(7) {
+  transform: rotate(252deg) translate(10em) rotate(-252deg);
+}
 
-    </div>
-    <div class="product-listing" style="background-color:#fff;!important">
+.circle-container > :nth-of-type(8) {
+  transform: rotate(288deg) translate(10em) rotate(-288deg);
+}
+.circle-container > :nth-of-type(9) {
+  transform: rotate(324deg) translate(10em) rotate(-324deg);
+}
+.circle-container > :nth-of-type(10) {
+  transform: rotate(360deg) translate(10em) rotate(-360deg);
+}
+
+
+
+.circle-container img {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.circle-container li {
+    background-image: url(assets/img/mypc/Ellipse.png);
+    //background-color: #fff;
+    background-position: right bottom, left top;
+    background-repeat: no-repeat, repeat;
+    background-repeat: no-repeat;
+    width: 31%;
+    margin: 0 auto;
+    display: block;
+    object-fit: cover;
+    padding: 12px;
+    background-size: unset;
+}
+.circle-container li:last-child img {
+  transform: scale(1.25);
+}
+    </style>
+    
+    <div class="product-listing">
         <section class="product-listing-area">
             <div class="container">
                 <div class="row">
- 
-<div class="col-md-9">
-       <p class="text-info">The PC configurator of PcComponentes is the perfect tool for you to choose one by one the parts of your computer and try different configurations and budgets.In addition, you can save your settings, print it or generate a link to share it on your social networks.Its use is very simple and intuitive, and in a few steps you can assemble a computer by parts completely to your liking.Get your basic,gaming or professional desktop pc at the best price and for you.Can you ask for more?</p>
-        <p class="text-info">
-Select the components to configure your PC to measure.
-You can check the characteristics of the article and its availability by clicking on its name.<p>
-    <table class="table table-bordered ">
-        <thead>
-            <th>
-                COMPONENT
-            </th>
-            <th>
-                SELECTION
-            </th>
-           
-        </thead>
-        <tbody>
-            <tr>
-                <td>Processor (CPU)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-            <tr>
-                <td>Cooling System (CPU Cooler)</td>
-                <td>Choose Cooling System (CPU Cooler) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-            <tr>
-                <td>Motherboard</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-            <tr>
-                <td>Memory (RAM)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-            <tr>
-                <td>Solid State Drive (M.2 SSD)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-            <tr>
-                <td>Solid State Drive (SATA SSD)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-             <tr>
-                <td>Solid State Drive (SATA SSD)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-             <tr>
-                <td>Solid State Drive (SATA SSD)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-             <tr>
-                <td>Solid State Drive (SATA SSD)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-             <tr>
-                <td>Solid State Drive (SATA SSD)</td>
-                <td>Choose Processor (CPU) <span class="pull-right" id="btn-cpu"><i class="fa fa-plus"></i></span></td>
-            </tr>
-        </tbody>
-    </table>
+ <div class="col-md-4">
+    
+    <div class="circlearea">
+     <!--    <ul class='circle-container'>
+  <li><img src='{{url("assets/img/mypc/Core Components 1.png")}}''></li>
+  <li><img src='{{url("assets/img/mypc/Cooling 1.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/image 15.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/image 16.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/image 17.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/image 18.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/Peropherals 1.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/Softwares 1.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/Storage 1.png")}}'></li>
+  <li><img src='{{url("assets/img/mypc/Core Components 1.png")}}'></li>
+   <li><img src='{{url("assets/img/mypc/Main 1.png")}}'></li> 
+</ul> -->
+
+<img src='{{url("assets/img/mypc/Components.png")}}' alt="" usemap="#map" />
+<map name="map">
+    <area shape="circle" coords="79, 346, 34"  onclick="getapiData(event);" />
+    <area shape="circle" coords="179, 420, 37" onclick="getapiData(event);"/>
+    <area shape="circle" coords="296, 426, 39" onclick="getapiData(event);"/>
+    <area shape="circle" coords="412, 351, 34" onclick="getapiData(event);"/>
+    <area shape="circle" coords="448, 225, 40" onclick="getapiData(event);" />
+    <area shape="circle" coords="404, 114, 38" onclick="getapiData(event);"/>
+    <area shape="circle" coords="297, 37, 35" onclick="getapiData(event);"/>
+    <area shape="circle" coords="45, 229, 40" onclick="getapiData(event);"/>
+    <area shape="circle" coords="86, 111, 40" onclick="getapiData(event);"/>
+    <area shape="circle" coords="176, 37, 38" onclick="getapiData(event);"/>
+</map>
+    </div>
 </div>
-<div class="col-md-3">
-    <div class="rightPaneldiv" style="">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="text-center align-middle" colspan="3" style="padding: 18px;background-color:#dddddd36;">
-                                                                        <span style="font-size: 18px;">Estimated Wattage: 0W</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle td_grandtotal" colspan="3" style="padding: 23px;">
-                                    <span style="font-size: 18px;">Total Price: Rs. 0/- </span>
-                                </td>
-                                <input type="hidden" name="grandtotal" id="grandtotal" value="0" spellcheck="false">
-                            </tr>
-                            <tr class="">
-                                <td class="text-center align-middle hoverTable" colspan="3" style="padding: 16px;">
-                                    <span style="font-size: 17px;"> Add All To Cart</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle" colspan="3" style="padding: 9px;background-color:#dddddd36; ">
-                                    <span style="font-size: 17px;"><a>Save This Build </a></span>
-                                </td>
-                            </tr> 
-                            <tr>
-                                <td class="text-center align-middle" style="padding: 16px;">
-                                    <a onclick="create_link();">Create Link</a>
-                                </td>
-                                <td class="text-center align-middle" style="padding: 16px;">
-                                    <a>Mail PDF</a>
-                                </td>
-                                <td class="text-center align-middle" style="padding: 16px;">
-                                    <a onclick="printBuildYourPc();">Print</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle" style="padding: 16px;">
-                                    <a data-toggle="modal" data-target="#md_sociallogin">What'sApp PDF</a>
-                                </td>
-                                <td class="text-center align-middle" style="padding: 16px;">
-                                    <a>Download PDF</a>
-                                </td>
-                                <td class="text-center align-middle" style="padding: 16px;">
-                                    <a onclick="getBuildYourPcLinkToShare();">Share On Social</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle" colspan="3" style="font-size: 14px;">Important: If in Doubt, For Compatibility Assured. Then Contact us at the Support Center </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+<div class="col-md-8">
+       <h3 class="text-orange text-left">Build it Yourself</h3>
+       <p class="text-left"><span class="text-info">CPU</span>&nbsp;&nbsp;&nbsp; <button class="btn bg-orange">INTEL</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-info">AMD</button></p>
+</div>
+
 </div>
                 </div>
         </section>
     </div>
 </main>
+<script>
+    function getapiData(e){
+        console.log(e);
+    }
+</script>
 @endsection     

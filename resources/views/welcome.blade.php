@@ -74,6 +74,7 @@
 
                                                     @endphp
                                                     @if($pid->variant && count($pid->variant)>0)
+                                                    <p class="mmd-product-price"><span class="old-price">₹{{$price}}</span><span class="new-price">₹{{$nprice}}</span></p>
 <a href="{{route("product",['slug'=>$pid->slug])}}" class="bg-orange btn text-dark seeopt">See Options</a>
                                                      @else
                                                     <p class="mmd-product-price"><span class="old-price">₹{{$price}}</span><span class="new-price">₹{{$nprice}}</span></p>
@@ -90,6 +91,8 @@
                                         @endforeach
                                         @endif
                                     </div>
+                                    <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
                                 </div>
                             </div>
                         
@@ -160,6 +163,8 @@
                         @endforeach
                         @endif
                        </div>
+                       <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
                     </div>
                 </div>
 
@@ -169,9 +174,9 @@
             <div class="row">
                 @if($brand_banner)
                 <div class="col-12">
-                 @foreach($brand_banner as $bimg)
-                 <img src="{{url('brands/'.$bimg->image)}}" style="width: 100%;" class="img img-responsive bannerimg">
-                 @endforeach
+                
+                 <img src="{{url('brands/'.$brand_banner->image)}}" style="width: 100%;" class="img img-responsive bannerimg brandadimg">
+                
                 </div>
                @endif 
             </div>
@@ -207,6 +212,7 @@
                                         $price=$prd->regular_price-round($prd->regular_price*$prd->discount/100);
                                         @endphp
                                         @if($prd->variant && count($prd->variant)>0)
+                                        <p class="mmd-product-price"><span class="old-price">₹{{$prd->regular_price}}</span><span class="new-price">₹{{$price}}</span></p>
 <a href="{{route("product",['slug'=>$prd->slug])}}" class="bg-orange btn text-dark seeopt">See Options</a>
                                                      @else
                                         <p class="mmd-product-price"><span class="old-price">₹{{$prd->regular_price}}</span><span class="new-price">₹{{$price}}</span></p>
@@ -219,6 +225,8 @@
                         @endforeach
                         @endif
                         </div>
+                        <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
                         
                     </div>
                 </div>
@@ -256,6 +264,8 @@
                 @endif
                    
                 </div>
+                <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
             </div>
 
         </div>
@@ -286,10 +296,11 @@
             </div>
                <div class="row">
 
+            
             @if($cat_banner)
              @foreach($cat_banner as $cimage)
              <div class="col-md-4">
-            <img src="{{url('brands/'.$cimage->image)}}"  alt="" class="mmd-hompage-banner2 w-100 img-fluid bannerimg">
+            <img src="{{url('brands/'.$cimage->image)}}"  alt="" class="mmd-hompage-banner2 w-100 img-fluid bannerimg catad">
              </div>
             @endforeach
             @endif
@@ -328,6 +339,7 @@
                                         @endphp
 
                                         @if($prd->variant && count($prd->variant)>0)
+                                        <p class="mmd-product-price"><span class="old-price">₹{{$prd->regular_price}}</span><span class="new-price">₹{{$price}}</span></p>
 <a href="{{route("product",['slug'=>$prd->slug])}}" class="bg-orange btn text-dark seeopt">See Options</a>
                                         @else
                                         <p class="mmd-product-price"><span class="old-price">₹{{$prd->regular_price}}</span><span class="new-price">₹{{$price}}</span></p>
@@ -342,7 +354,8 @@
                          @endif
                         @endif
                         </div>
-                        
+                        <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
                     </div>
                     <!-- 2nd row -->
                     <div class="swiper" id="relslider1">
@@ -374,6 +387,7 @@
                                         @endphp
 
                                         @if($prd->variant && count($prd->variant)>0)
+                                        <p class="mmd-product-price"><span class="old-price">₹{{$prd->regular_price}}</span><span class="new-price">₹{{$price}}</span></p>
 <a href="{{route("product",['slug'=>$prd->slug])}}" class="bg-orange btn text-dark seeopt">See Options</a>
                                     @else
                                         <p class="mmd-product-price"><span class="old-price">₹{{$prd->regular_price}}</span><span class="new-price">₹{{$price}}</span></p>
@@ -387,7 +401,8 @@
                          @endif
                         @endif
                         </div>
-                        
+                        <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
                     </div>
                 </div>
             </div>

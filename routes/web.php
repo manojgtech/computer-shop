@@ -54,6 +54,9 @@ Route::post('checkoutnow', [RazorpayPaymentController::class, 'checkout']);
 Route::post('saveAddress',[RazorpayPaymentController::class, 'saveAddress']);
 Route::get('test', [RazorpayPaymentController::class, 'test']);
 Route::get('build-your-pc', [App\Http\Controllers\MyComputer::class, 'index']);
-
+Route::post("addtowishlist",[App\Http\Controllers\CartController::class, 'addtowishlist'])->name('addtowishlist');
+Route::get("wishlist",[App\Http\Controllers\CartController::class, 'wishlist'])->name('wishlist');
 Route::get("preowned-pc",[App\Http\Controllers\WelcomeController::class, 'preowned'])->name('preowned-pc');
 Route::get("preowned-pc-single/{slug}",[App\Http\Controllers\WelcomeController::class, 'singlepreowned']);
+
+URL::forceScheme('https');

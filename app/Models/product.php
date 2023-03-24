@@ -11,6 +11,7 @@ use App\Models\property;
 use App\Models\poroductImage;
 use App\Models\poroductSeries;
 use App\Models\productVariantOptions;
+use App\Models\Wishlist;
 
 class product extends Model
 {
@@ -49,5 +50,7 @@ class product extends Model
     {
         return $this->hasMany(faq::class);
     }
+
+    
     
 }

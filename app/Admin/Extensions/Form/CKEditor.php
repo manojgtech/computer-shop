@@ -15,7 +15,7 @@ class CKEditor extends Field
     public function render()
     {
        // $this->script = "$('textarea.{$this->getElementClassString()}').ckeditor();";
-        $this->script = "$(window).on('load', function (){ $('.producteditor').each(function () {
+        $this->script = " $('.producteditor').each(function () {
         let id = $(this).attr('id');
         console.log(id);
         CKEDITOR.replace( document.querySelector( '#'+id ),{
@@ -31,7 +31,7 @@ class CKEditor extends Field
         
             
         } );
-    }); });";
+    }); ";
  
 
         return parent::render();

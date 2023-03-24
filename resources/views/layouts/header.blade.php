@@ -22,6 +22,9 @@ display: inline-block;
 /*Without this, clicking will make it sticky*/
 pointer-events: none;
 }
+.morecatdiv a{
+  color:black;
+}
 </style>
 <header class="desktop d-none d-md-block">
         <nav class="mmd-topbar">
@@ -62,16 +65,16 @@ pointer-events: none;
                 <!-- Navbar links -->
                 <div class="collapse navbar-collapse" id="mmdNavbar">
                     <ul class="navbar-nav mx-auto mmdNav">
-                         <li class="nav-item dropdown dropdown-hover">
-          <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
-            data-mdb-toggle="dropdown" aria-expanded="false">
+                         <li class="nav-item dropdown dropdown-hover" onclick="openBrandSt();">
+          <a class="nav-link dropdown-toggle" href="{{route('allbrands')}}" id="navbarDropdown" role="button"
+            data-mdb-toggle="dropdown" onclick="openBrandSt();" data-bs-auto-close="false" aria-expanded="false" data-bs-auto-close="outside">
             Brand Store
           </a>
           <!-- Dropdown menu -->
           <div class="dropdown-menu dropdown-submenu megamenu2" aria-labelledby="navbarDropdown" style="border-top-left-radius: 0;
-                            border-top-right-radius: 0;
-                          ">
-            <div class="container">
+                            border-top-right-radius: 0;z-index: 99999999;
+                          " data-bs-auto-close="outside">
+            <div class="container" data-bs-auto-close="outside">
               <div class="row my-4">
                @foreach($brandlinks as $child)
                 <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
@@ -95,7 +98,7 @@ pointer-events: none;
                             <a class="nav-link" href="{{route('preowned-pc')}}">Pre-owned PC</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('allbrands')}}">Pre-built PC</a>
+                            <a class="nav-link" href="{{url('build-your-pc')}}">Pre-built PC</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -104,7 +107,7 @@ pointer-events: none;
                             <a class="nav-link" href="{{ route('login') }}">Account/Sigin</a>
                             @else 
                              <a class="nav-link dropdown-toggle" href="{{ route('home') }}" data-bs-toggle="dropdown" id="dropdownMenuButton1" aria-expanded="false">Hello {{Auth::user()->name}}</a>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <ul class="dropdown-menu usermenuid" aria-labelledby="dropdownMenuButton1">
         <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}
@@ -149,7 +152,7 @@ pointer-events: none;
           <a class="nav-link" href="{{route('category',['category'=>$mcat->slug])}}" id="navbarDropdown" role="button"
             data-mdb-toggle="dropdown" aria-expanded="false">
 
-           <img class="catlogos" src="{{!empty($mcat->logo) ? url('brands/'.$mcat->logo) :url('brands/dfcat.png')}}"> {{$mcat->name}}   <i class="bi-chevron-right" ></i>
+           <img class="catlogos" style="display:none;" src="{{!empty($mcat->logo) ? url('brands/'.$mcat->logo) :url('brands/dfcat.png')}}"> <span style="width: 135px;display: inline-block;">{{$mcat->name}} </span>  <img src="{{url('brands/Icon-awesome-arrow-alt-circle-right.png')}}" class="iconchev">
 
           </a>
           <!-- Dropdown menu -->
@@ -170,7 +173,7 @@ pointer-events: none;
                 <div class="col-md-6 col-lg-4 mb-4">
                   <div class="list-group list-group-flush">
                     @foreach($child as $cchild)
-                    <a href="{{route('category',['category'=>$cchild->slug])}}" class="list-group-item list-group-item-action">{{$cchild->name}}</a>
+                    <a href="{{route('category',['category'=>$cchild->slug])}}" class="list-group-item list-group-item-action"><span style="width: 110px;display: inline-block;">{{$cchild->name}} </span> </a>
                     @endforeach
                   </div>
                 </div>
@@ -192,11 +195,11 @@ pointer-events: none;
         <li><a class="dropdown-item nav-link" href="{{route('category',['category'=>$mcat->slug])}}"><img class="catlogos" src="{{!empty($mcat->logo) ? url('brands/'.$mcat->logo) :url('brands/dfcat.png')}}"> {{$mcat->name}}</i></a></li>
         @endif
         @endforeach
-        <li><a class="dropdown-item nav-link" href="{{url('all-categories')}}"><img class="catlogos" src="{{!empty($mcat->logo) ? url('brands/'.$mcat->logo) :url('brands/dfcat.png')}}">All Categories</i></a></li>
+        <li><a class="dropdown-item nav-link" href="{{url('all-categories')}}"><img style="display:none;" class="catlogos" src="{{!empty($mcat->logo) ? url('brands/'.$mcat->logo) :url('brands/dfcat.png')}}">All Categories</i></a></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6">
            
                         <a href="./" class="text-white me-2" style="position:relative;top:6px"><i class="fa fa-home fs-4"></i></a>
                         <form class="form d-inline-block" id="productsearchform" action="{{url('search')}}">
@@ -208,8 +211,13 @@ pointer-events: none;
                         </form>
                     </div>
                     <div class="col-md-3 text-center text-md-end">
-                        <button class="btn bg-orange">Build Your PC</button>
-                        
+                        <button class="btn bg-orange"><a style="color:black;" href="{{url('build-your-pc')}}">Build Your PC</a></button>
+                        @guest
+
+                        @else
+                        <button class="btn bg-orange"><a style="color:black;" href="{{route('wishlist')}}">Wishlist</a></button>
+                        @endguest
+                       
                     </div>
                 </div>
             </div>

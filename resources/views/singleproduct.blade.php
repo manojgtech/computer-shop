@@ -1,5 +1,6 @@
 @extends('layouts.home')
 @section('content')
+
 <main class="product">
     <div class="container">
         <div class="row">
@@ -11,11 +12,11 @@
     @if($product->maincategory)
    <li class="breadcrumb-item txtwhite"><a class="txtwhite" href="{{route('category',['category'=>$product->maincategory!=null ? $product->maincategory->slug :'pcs'])}}">{{$product->maincategory->name}}</a></li>
     @endif
-    <li class="breadcrumb-item txtwhite"><a class="txtwhite" href="{{route('category',['category'=>$product->category!=null ? $product->category->slug :'pcs'])}}">{{$product->category->name}}</a></li>
+    <li class="breadcrumb-item txtwhite"><a class="txtwhite" href="{{route('category',['category'=>$product->category!=null ? $product->category->slug :'pcs'])}}">{{isset($product->category->name) ? $product->category->name : 'no  category'}}</a></li>
     <li class="breadcrumb-item active txtyellow" aria-current="page">{{$product->title}}</li>
   </ol>
 </nav>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         @if($product->images)
                         @php
                          $images=$product->images->toArray();
@@ -58,7 +59,7 @@
                             <div class="swiper-button-next"></div>
                         </div>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-5">
                         <div class="product-desc">
                             
                             <h4 class="product-title">{{$product->title}}</h4>
@@ -76,9 +77,9 @@
                                @endphp
                             @endif
                             @if($pranges)
-                            <h4 class="product-price vprice" style={{$prdis1}}><span class="text-info product-price1">{{$pranges[0]->minp}}</span> &nbsp;&nbsp;-<span class="product-price2">{{$pranges[0]->maxp}}</span></h4>
+                            <h4 class="product-price vprice" style="display:none;"><span class="product-price1" style="color:#fff !important;">{{$pranges[0]->minp}}</span> &nbsp;&nbsp;-&nbsp;&nbsp&nbsp;&nbsp<span class="product-price2" style=" !important;">{{$pranges[0]->maxp}}</span></h4>
                             @endif
-                                <h4 class="product-price" style={{$prdis}}><strike class="text-info product-price1">{{$product->regular_price}}</strike> &nbsp;&nbsp;<span class="product-price2">{{$product->sell_price}}</span></h4>
+                                <h4 class="product-price"><strike class="product-price1" style="color:#fff;">{{$product->regular_price}}</strike> &nbsp;&nbsp;<span class="product-price2">{{$product->sell_price}}</span></h4>
                                  
                                 <p class="product-stock-status">{{ ($product->stock>0) ? 'In stock': 'Out of stock'}}</p>
                               
@@ -99,18 +100,22 @@
                                 Add To Cart
                             </button>
                             <button style={{$prdis}} class="add-to-cart1 btn btn-info"  data-id={{$product->id}}>
-                             <a href="{{route('buynow',['id'=>$product->id])}}">
+                             <a href="{{route('buynow',['id'=>$product->id])}}" class="txtyellow">
                                 Buy Now
                               </a>
                             </button>
-                            <ul class="list-unstyled mt-5 wishlist-compare d-none">
+                            <ul class="list-unstyled mt-5 wishlist-compare">
+                            
+                            @guest
+                            @else
                                 <li>
-                                    <a href="#">
+                                    <a onclick="addToWish(this)" data-user={Auth::user()->id} data-id="{{$product->id}}">
                                         <i class="bi-heart"></i>
                                         Add to Wishlist
                                     </a>
                                 </li>
-                                <li>
+                                @endguest
+                                <li class="d-none">
                                     <a href="#">
                                         <!-- <i class="bi-arrow-down-up"></i> -->
                                         Compare
@@ -132,7 +137,7 @@
                                         $style="background:".$v['attribute_value'].'; border-color:white;height:25px;width:25px; border-radius: 50%;display: inline-block;border: 2px solid var(--mmd-orange);background-clip: content-box;margin:0 auto;';
                                        @endphp
                                     
-                                    <span style="{{$style}}" class="colorradio class{{$v['attribute_name']}}"  value="{{$v['attribute_value']}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="{{$v['attribute_value']}}" data-varid={{$v['id']}} data-rprice="{{$v['regular_price']}}" data-sprice="{{$v['sell_price']}}" data-sku="{{$v['sku']}}" data-stock="{{$v['stock']}}" type="radio" name="{{$v['attribute_value']}}"> &nbsp;&nbsp;</span>
+                                    <span style="{{$style}}" {{$loop->iteration==1 ? 'data-first=1':''}} class="colorradio class{{$v['attribute_name']}}"  value="{{$v['attribute_value']}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="{{$v['attribute_value']}}" data-varid={{$v['id']}} data-rprice="{{$v['regular_price']}}" data-sprice="{{$v['sell_price']}}" data-sku="{{$v['sku']}}" data-stock="{{$v['stock']}}" type="radio" name="{{$v['attribute_value']}}"> &nbsp;&nbsp;</span>
                                     @endforeach
                                     @else
                                     <span>Select {{$key}}</span>
@@ -150,12 +155,13 @@
                             </ul>
                                 </div>
                             </div>
-                            @else
+                            @endif
                             <ul class="list-unstyled product-other-list">
+                            
                                 <li class="prsku" style={{$prdis}}>
                                     SKU <span>{{$product->sku}}</span>
                                 </li>
-                                @endif
+                                
 @if($product->category)
                                 <li>
                                   
@@ -176,25 +182,30 @@ $ptags=explode(",",$product->tags);
                                 </li>
 @endif
                             </ul>
-                            <div class="shortdesc">
+                            <div class="shortdesc d-none">
                                 @if($product->short_description)
                                  @if(strlen(trim(strip_tags($product->short_description)))>0)
-                                <h4 class="text-info">About this item</h4>
+                                <h4 class="text-info txtyellow">About this item</h4>
                                 @php 
-                                $ptxt=shortxt($product->short_description);
+                                $ptxt=shortxt(strip_tags($product->short_description));
                                 @endphp
-                                <div class="pbio">
-                                {!! $ptxt !!}
-</div>
-                                <div class="shortpbio d-none">
-                                     {!! $product->short_description !!}
-                                </div>
-                                <p><a id="shmrtxt" class="txtyellow">Show more..</a></p>
-                                <p><a id="shltxt" class="d-none txtyellow">Show less..</a></p>
+                                <span class="teaser">{{$ptxt}}</span>
+
+                        <span class="completetxt">{!! $product->short_description !!}</span>
+
+                        <span class="moretxt txtyellow" id="showhidetxt">more...</span>
                                  @endif
                                  @endif
                             </div>
                         </div>
+                    </div>
+                    <!-- add b -->
+                    <div class="col-md-3">
+                        <!-- h -->
+                        @if($ad_banners)
+                        <img src="{{url('brands/'.$ad_banners->image)}}" alt="" class="mmd-hompage-banner2 w-100 img-fluid bannerimg">
+                        @endif
+
                     </div>
                 </div>
                 <div class="row">
@@ -217,13 +228,17 @@ $ptags=explode(",",$product->tags);
                             </div>
                             <div class="tab-pane fade" id="pr-specs">
                           <div class="table-responsive bg-white rounded p-2">
+                          
+                               @foreach($props as $key => $prop)
+                               
+                                <h4 class="text-left txtyellow grptxt">{{$key}}</h4>
                                     <table class="table">
                                         <tbody>
-                                       @if($product->property)
-                                       @foreach($product->property as $attr)
+                                       @if($prop)
+                                       @foreach($prop as $attr)
                                             <tr>
-                                                <td>{{$attr->property_name}}</td>
-                                                <td>{{$attr->property_value}}</td>
+                                                <td>{{$attr['property_name']}}</td>
+                                                <td>{!! $attr['property_value'] !!}</td>
                                             </tr>
                                        
                                         @endforeach
@@ -231,6 +246,7 @@ $ptags=explode(",",$product->tags);
                                        
                                         </tbody>
                                     </table>
+                                @endforeach    
                                @if($product->pdf)
                                
                           
@@ -238,14 +254,16 @@ $ptags=explode(",",$product->tags);
              <br/>
             <h4 class="related-product-heading">Product <span>Resources</span></h4>
             <div class="table-responsive bg-white rounded p-2">
-                              <table class="table">
+                @if($product->pdf)
+                              <table class="table" id="pdftbl">
                                         <tbody>
  <tr>
                                                 <td>PDF</td>
-                                                <td><a href="{{url('brands/'.$product->pdf)}}">Download File</a></td>
+                                                <td class="text-center"><a href="{{url('brands/'.$product->pdf)}}">{{basename($product->pdf)}}</a></td>
                                             </tr>
                                     </tbody>
                                         </table>
+                                        @endif
                             @endif
                         </div>
                             </div>
@@ -318,8 +336,9 @@ $ptags=explode(",",$product->tags);
                 </div>
                 <div class="row mt-5">
                     <div class="col-md-12">
+                @if(count($faqs)>0)
                     <h4 class="related-product-heading">Product <span>FAQs</span></h4>
-                    @if($faqs)
+                  
 <div class="accordion" id="accordionExample">
     @foreach($faqs as $faq)
    <div class="accordion-item">
@@ -337,8 +356,9 @@ $ptags=explode(",",$product->tags);
   </div>
  @endforeach
 </div>
-@endif
+
 </div>
+@endif
                 </div>
             </div>
             <div class="col-md-2">
@@ -348,12 +368,13 @@ $ptags=explode(",",$product->tags);
         </div>
         <div class="row mt-5">
             <div class="col-md-12">
-                <h4 class="related-product-heading {{$relprods->count()>0 ? '':'d-none'}}">Related <span>Products</span></h4>
+                <h4 class="related-product-heading">Related <span>Products</span></h4>
                 <div class="swiper" id="related-product">
                     <div class="swiper-wrapper">
                         @if($relprods)
-                        @foreach($relprods as $prd){
+                        @foreach($relprods as $prd)
                         <div class="swiper-slide">
+                        <a href="{{route('product',['slug'=>$prd->slug])}}">
                             <div class="mmd-product-vertical">
                                 <div class="product-top">
                                      @if($prd->discount)
@@ -363,7 +384,7 @@ $ptags=explode(",",$product->tags);
                                 </div>
                                 <div class="product-bottom">
                                     <h4 class="mmd-product-category">{{$prd->category->name}}</h4>
-                                    <p class="mmd-product-name">{{$prd->title}}</p>
+                                    <p class="mmd-product-name"><a href="{{route('product',['slug'=>$prd->slug])}}">{{$prd->title}}</a></p>
                                     <ul class="mmd-product-rating d-flex list-unstyled pl-0 mb-0 d-none">
                                         <li><a href=""><i class="bi-star"></i></a></li>
                                         <li><a href=""><i class="bi-star"></i></a></li>
@@ -372,14 +393,17 @@ $ptags=explode(",",$product->tags);
                                         <li><a href=""><i class="bi-star"></i></a></li>
                                     </ul>
                                     <p class="mmd-product-price"><span class="old-price">₹{{$prd->regular_price}}</span><span class="new-price">₹{{$prd->regular_price-($prd->regular_price*$prd->prd/100)}}</span></p>
-                                    <a href="" class="bg-orange rounded p-2 text-dark"><i class="bi-cart"></i> Add to Cart</a>
+                                    <a onClick="addtocart(this);" class="bg-orange rounded p-2 text-dark"><i class="bi-cart"></i> Add to Cart</a>
                                 </div>
                             </div>
+                      </a>
                         </div>
                         @endforeach
                         @endif
                        
                     </div>
+                    <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
@@ -388,10 +412,10 @@ $ptags=explode(",",$product->tags);
 </main>
 @php
 function shortxt($title){
-    if (strlen($title) < 120) {
+    if (strlen($title) < 100) {
      return $title;
 } else {
-   $new = wordwrap($title, 120);
+   $new = wordwrap($title, 100);
    $new = explode("\n", $new);
    $new = $new[0] . '...';
    return $new;
@@ -408,6 +432,16 @@ lightbox.props.sources = @json($imgdata);
 lightbox.props.onInit = () => console.log('Lightbox initialized!');
 
 lightbox.open();
+});
+
+
+document.addEventListener('readystatechange', event => { 
+
+
+// When window loaded ( external resources are loaded too- `css`,`src`, etc...) 
+if (event.target.readyState === "complete") {
+  document.querySelectorAll('[data-first]')[0].click();
+}
 });
 </script>
 @endsection

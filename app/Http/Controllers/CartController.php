@@ -11,6 +11,8 @@ use App\Models\common;
 use App\Models\address;
 use Illuminate\Support\Facades\Auth;
 use App\Models\productVariantOptions;
+use App\Models\PreownedPC;
+use App\Models\Wishlist;
 
 
 class CartController extends Controller
@@ -18,9 +20,22 @@ class CartController extends Controller
     public function addtoCart(Request $request){
      $pid=isset($request->pid) ? $request->pid :null;
      $qty=isset($request->qty) ? $request->qty : 1;
+     $type=isset($request->type) ? $request->type : 'product';
      $vid=(isset($request->varid) && ($request->varid!="")) ? $request->varid : 0;
-     $product=product::find($pid);
-      $vp=productVariantOptions::find($vid);
+      if($type=='product'){
+        $product=product::find($pid);
+        if($vid!=0){
+            $vp=productVariantOptions::find($vid);
+         }else{
+            $vp=null;
+         }
+      }else{
+        $product=PreownedPC::find($pid);
+        $vp=null;
+      }
+     
+     
+      
 
     
 
@@ -29,12 +44,14 @@ class CartController extends Controller
         $at=array("image"=>$product->pimage->image ?? '','discount'=>$product->discount);
         if($vp){
            $at=array("image"=>$product->pimage->image ?? '','discount'=>$product->discount,'name'=>$vp->attribute_name,'value'=>$vp->attribute_value,'rprice'=>$vp->regular_price,'sprice'=>$vp->sell_price);
+        }else{
+            $at=[];
         }
-        
+         $price=isset($product->regular_price) ? $product->regular_price :$product->sell_price;
         \Cart::add(array(
             'id' => $product->id,
             'name' => $product->title,
-            'price' => $product->regular_price,
+            'price' => $price,
             'quantity' => $qty,
              'attributes' => $at,
             'associatedModel' => $product
@@ -95,6 +112,35 @@ class CartController extends Controller
         $data['quantity']=\Cart::getTotalQuantity();
         $data['amount']=\Cart::getTotal();
         return view('checkout',$data);
+     }
+
+     function addtowishlist(Request $request){
+        $wish=Wishlist::where(['user_id'=>$request->user_id,"product_id"=>$request->pid])->first();
+        if(!$wish){
+            $wishlist=new Wishlist;
+            $userid=$request->user_id;
+            $wishlist->user_id=$request->user_id;
+            $wishlist->product_id=$request->pid;
+            if($wishlist->save()){
+                echo 1;
+                die;
+            }
+        }
+        
+        die;
+     }
+
+     public function  wishlist(){
+       $userid=Auth::user()->id;
+       $wlist=Wishlist::where("user_id",$userid)->get();
+       if($wlist){
+         $data=common::commonData('brand');
+         $data['npcs']=$wlist;
+         return view('wishlist',$data);
+       }else{
+         echo "No item in wishlist";
+       }
+
      }
 
 }

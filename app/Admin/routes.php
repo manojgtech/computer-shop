@@ -2,6 +2,7 @@
 
 use Illuminate\Routing\Router;
 
+
 Admin::routes();
 
 Route::group([
@@ -58,3 +59,4 @@ Route::group([
     $router->get("getbrandsubcategory",[App\Admin\Controllers\ImportProducts::class,'getbrandsubcategory']);
 
 });
+\Illuminate\Support\Facades\URL::forceScheme('https');

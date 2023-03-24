@@ -78,10 +78,10 @@
                                 <input type="number" min=1 value=1 name="product-quantity" id="product-quantity">
                                 <button onclick="incQty();"><i class="bi-plus"></i></button>
                             </div>
-                            <button  class="add-to-cart btn" data-id={{$product->id}}  data-vid="" data-qty="1" onClick="addtocart(this);">
+                            <button  class="add-to-cart btn" data-id={{$product->id}}  data-vid="" data-qty="1" data-type="preowned" onClick="addtocart(this);">
                                 Add To Cart
                             </button>
-                            <button  class="add-to-cart1 btn btn-info"   data-id={{$product->id}}>
+                            <button  class="add-to-cart1 btn btn-info" data-id={{$product->id}}>
                              <a href="{{route('buynow',['id'=>$product->id])}}">
                                 Buy Now
                               </a>
@@ -203,8 +203,8 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <nav class="nav nav-pills product-tabs text-center">
-                            <a href="#pr-description" class="nav-item nav-link active" data-bs-toggle="pill">Description</a>
-                            <a href="#pr-specs" class="nav-item nav-link" data-bs-toggle="pill">Specification</a>
+                             <a href="#pr-description" class="nav-item nav-link active" data-bs-toggle="pill">Description</a>
+                            <!-- <a href="#pr-specs" class="nav-item nav-link" data-bs-toggle="pill">Specification</a> -->
 <!-- 
                             <a href="#pr-reviews" class="nav-item nav-link" data-bs-toggle="pill">Reviews</a>
                             <a href="#pr-reviews" class="nav-item nav-link" data-bs-toggle="pill">Reviews</a> -->
@@ -218,7 +218,7 @@
                              
                                
                             </div>
-                            <div class="tab-pane fade" id="pr-specs">
+                            <div class="tab-pane fade" id="pr-specs" style="display:none;">
                           <div class="table-responsive bg-white rounded p-2">
                                     <table class="table">
                                         <tbody>

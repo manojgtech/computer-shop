@@ -85,6 +85,7 @@
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script src="{{asset('js/sweetalert.min.js')}}"></script>
         
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
 
         
         <!-- <script src="https://rawgit.com/intoro/Lazy_Load_JQuery/master/js/2_2_4_jquery.min.js"></script> -->
@@ -107,8 +108,9 @@
                     enabled: true
                 },
                 autoplay: {
-   delay: 5000,
- },
+                delay: 5000,
+                },
+
                 breakpoints: {
                     320: {
                         slidesPerView: 2,
@@ -165,6 +167,12 @@ window.addEventListener('load', productSliders);
                 autoplay: {
                 delay: 5000,
                 },
+                nextButton: '#product-slider-2 .swiper-button-next',
+                prevButton: '#product-slider-2 .swiper-button-prev', 
+                navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+                },
                 breakpoints: {
                     320: {
                         slidesPerView: 2
@@ -185,8 +193,17 @@ window.addEventListener('load', productSliders);
                 keyboard: {
                     enabled: true
                 },
+                observer: true,
+            observeParents: true,
+            parallax:true,
                 autoplay: {
                 delay: 5000,
+                },
+                nextButton: '#category-slider .swiper-button-next',
+                prevButton: '#category-slider .swiper-button-prev', 
+                navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
                 },
                 breakpoints: {
                     320: {
@@ -199,6 +216,7 @@ window.addEventListener('load', productSliders);
                         slidesPerView: 7
                     },
                 },
+                
             })
             new Swiper('#mmd-homepage-slider', {
                 slidesPerView: 1,
@@ -219,7 +237,10 @@ window.addEventListener('load', productSliders);
                 navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
-    } 
+    },
+    pagination: {
+      el: '.swiper-pagination',
+    }, 
             });
 
             
@@ -229,6 +250,9 @@ window.addEventListener('load', productSliders);
                 spaceBetween: 10,
                 lazyLoading: true,
                 loop:true,
+                observer: true,
+            observeParents: true,
+            parallax:true,
                 autoplay: {
                 delay: 5000,
                 },
@@ -236,7 +260,14 @@ window.addEventListener('load', productSliders);
                     enabled: true
                 },              
                 nextButton: '#featured-brands-slider .swiper-button-next',
-                prevButton: '#featured-brands-slider .swiper-button-prev',  
+                prevButton: '#featured-brands-slider .swiper-button-prev', 
+                navigation:{
+                nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev' ,
+                },
+      pagination: {
+      el: '.swiper-pagination',
+    },
                 breakpoints: {
                 320: {
                     slidesPerView: 4,
@@ -256,6 +287,9 @@ window.addEventListener('load', productSliders);
                 slidesPerView:5,
                 spaceBetween: 10,
                 lazyLoading: true,
+                observer: true,
+            observeParents: true,
+            parallax:true,
                 keyboard: {
                     enabled: true
                 },
@@ -271,6 +305,9 @@ window.addEventListener('load', productSliders);
                         slidesPerView: 5,
                     },
                 },
+                pagination: {
+      el: '.swiper-pagination',
+    }, 
                 navigation: {
                     nextEl: '#product-gallery .swiper-button-next',
                     prevEl: '#product-gallery .swiper-button-prev',
@@ -284,6 +321,9 @@ window.addEventListener('load', productSliders);
                 spaceBetween: 25,
                 loop:true,
                 lazyLoading: true,
+                observer: true,
+            observeParents: true,
+            parallax:true,
                 autoplay: {
                 delay: 5000,
                 },
@@ -291,7 +331,12 @@ window.addEventListener('load', productSliders);
                     enabled: true
                 },              
                 nextButton: '#relslider .swiper-button-next',
-                prevButton: '#relslider .swiper-button-prev',  
+                prevButton: '#relslider .swiper-button-prev',
+                
+                navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+                },  
                
             });
             
@@ -307,13 +352,41 @@ window.addEventListener('load', productSliders);
                 keyboard: {
                     enabled: true
                 },              
-                nextButton: '#relslider .swiper-button-next',
-                prevButton: '#relslider .swiper-button-prev',  
+                nextButton: '#relslider1 .swiper-button-next',
+                prevButton: '#relslider1 .swiper-button-prev', 
+                navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+                }, 
+
                
             });
 
 
-          
+          new Swiper('#related-product', {
+                slidesPerView: 6,
+                spaceBetween: 25,
+                loop:true,
+                lazyLoading: true,
+                observer: true,
+            observeParents: true,
+            parallax:true,
+                autoplay: {
+                delay: 5000,
+                },
+                keyboard: {
+                    enabled: true
+                },              
+                nextButton: '#related-product .swiper-button-next',
+                prevButton: '#related-product .swiper-button-prev', 
+                navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+                },  
+               
+            });
+            
+
             $('.mobile-menu-wrapper .overlay').click(function(res){
                 $('.mobile-menu-wrapper').removeClass('shows');
             });
@@ -340,14 +413,14 @@ window.addEventListener('load', productSliders);
                 max: 100000,
                 values: [ 1000, 100000 ],
                 slide: function( event, ui ) {
-                $( "#amount" ).val( "₹" + ui.values[ 0 ] + " - ₹" + ui.values[ 1 ] );
+                $( "#amount" ).val( "?" + ui.values[ 0 ] + " - ?" + ui.values[ 1 ] );
                 pmin=ui.values[ 0 ];
                 pmax=ui.values[ 1 ];
                 page=parseInt($("#loadbtn").attr('data-page'))-1;
                 loadProducts(page);
                 }
             });
-            $( "#amount" ).val( "₹100 - ₹1000000");
+            $( "#amount" ).val( "?100 - ?1000000");
             var sameaddress=false;
             $("document").ready(function(){
                 $("#same-address").change(function(){
@@ -363,7 +436,7 @@ window.addEventListener('load', productSliders);
                 $(".spinner-border").css("display","block");
                 var page=$("#upageinfo").attr("data-page");
                 if(page=="category"){
-                    loadProducts(page);
+                    loadProducts(0);
                 }
                 // $('img.lazy').lazyload({
                 //     effect: "fadeIn"
@@ -421,9 +494,16 @@ window.addEventListener('load', productSliders);
                 data:{cat:param,sort:sortby,min:pmin,max:pmax,page },
                 success:function(data) {
                     $(".spinner-border").css("display","none");
+                    if(page==1){
                     $("#cproddiv").html(data.view);
+                    $(".curcount").text(parseInt(data.limit));
+                    }else{
+                    $("#cproddiv").append(data.view);
+                    $(".curcount").text(parseInt(data.limit)*parseInt(data.page));
+                    }
                     $("#loadbtn").attr("data-page",parseInt(data.page)+1);
-                     $(".curcount").text(data.limit);
+                
+                     
                      $(".totalcount").text(data.count);
                      if(data.count==0){
                         $("#loadbtn").hide();
@@ -461,6 +541,10 @@ window.addEventListener('load', productSliders);
                 if(typeof qw=='undefined'){
                     qw=1;
                 }
+                var type=$(th).attr("data-type");
+                if(typeof type=='undefined'){
+                    type='product';
+                }
                 num=qw; 
                 $.ajaxSetup({
                     headers: {
@@ -471,7 +555,7 @@ window.addEventListener('load', productSliders);
                 $.ajax({
                 type:'POST',
                 url:'<?php echo route('addtocart'); ?>',
-                data:{pid:id,qty:num,varid:vid },
+                data:{pid:id,qty:num,varid:vid,type:type },
                 success:function(data) {
                    showToast("Item added to cart");
                 
@@ -499,7 +583,8 @@ window.addEventListener('load', productSliders);
                      $("#cart"+cid).remove();
                    }
                    $("#cart"+cid+" .ttam").text(parseInt(data)*p);
-
+                   $("#cartpage_mainqty,#cartpage_sideqty").text(data);
+                   $("#cartpage_sideamount").text(parseInt(data)*p);
                 }
                 });
             }
@@ -620,7 +705,7 @@ function showPosition(position) {
             // Inicia o ciclo outra vez
             setTimeout(function(){
 
-                tabCycle = setInterval(tabChange, 30000)//quando recomeÃ§a assume este timing
+                tabCycle = setInterval(tabChange, 30000)//quando recomeça assume este timing
 
             }, 30000);
         });
@@ -740,10 +825,14 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       success: function(data){
         var data=JSON.parse(data);
         if(data.status==1){
-            var id1=data.address_id1;
-            var id2=data.address_id2;
+            var id1=data.address1;
+            var id2=data.address2;
             document.getElementById("address_id1").value=id1;
             document.getElementById("address_id2").value=id2;
+            document.querySelector(".billform").style.display="none"
+          document.querySelector(".needs-validation").style.display="none"
+          swal("Addresses saved successfully.Proceed to pay now.");
+
 
         }
       }
@@ -781,15 +870,60 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 
     });
 
+function openBrandSt(){
 
+window.location.href="{{route('allbrands')}}";
+   } 
+
+
+$(".moretxt").click(function(e){
+    console.log(e)
+    if($(this).hasClass("moretxt")){
+      $(this).text("less..").addClass('lesstxt').removeClass('moretxt').siblings(".completetxt").show();   
+  }else{
+    console.log("one2")
+    $(this).text("more..").addClass('moretxt').removeClass('lesstxt').siblings(".completetxt").hide();
+  }
     
+    return false;   
+});
+
+$(".lesstxt").click(function(){
+    console.log("one2")
+    $(this).text("more..").addClass('moretxt').removeClass('lesstxt').siblings(".completetxt").hide();    
+});
 
 
+//lazy load
 
-     </script>
+$(document).ready(function () {
+$("img").lazyload({
+effect: "fadeIn",
+});
+});
 
-
-
+function addToWish(th){
+    var id=$(th).data('id');
+    var userid=$(th).data('user');
+    var fd={pid:id,user_id:userid};
+    console.log(fd);
+    $.ajaxSetup({
+                 headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 }
+                });
+    $.ajax({
+      url: '{{url('addtowishlist')}}',
+      type: 'POST',
+      data: {pid:id,user_id:userid},
+      success: function(data){
+         if(data==1){
+            swal("Added to wishlist");
+         }
+      } 
+    }); 
+}
+</script>
 
 
 

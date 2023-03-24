@@ -36,7 +36,7 @@
         <div class="mmd-product-vertical">
             <div class="product-top">
                 <span class="off-tag">{{$product->discount}}%</span>
-                <a href="{{route("product",['slug'=>$product->slug])}}" ><img lazy src="{{$product->defaultpic!=null ? url("brands/".$product->defaultpic) : url('brands/defaultpc.png')}}" alt="{{$product->title}}" class="img-fluid w-100 lazy"></a>
+                <a href="{{route("product",['slug'=>$product->slug])}}" ><img lazy data-original="{{$product->defaultpic!=null ? url("brands/".$product->defaultpic) : url('brands/defaultpc.png')}}" alt="{{$product->title}}" class="img-fluid w-100 lazy"></a>
             </div>
             <div class="product-bottom">
                 @if($product->category)

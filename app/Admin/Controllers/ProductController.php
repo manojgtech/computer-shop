@@ -72,8 +72,13 @@ class ProductController extends AdminController
     // Add a column filter
     $filter->like('title', 'name');
      $filter->equal('category_id')->select($cats);
-     $filter->equal('subcategory_id')->select($cats1);
-     $filter->equal('brand_id')->select($brands);
+     $filter->like('subcategory_id')->select($cats1);
+     $filter->where(function ($query) {
+
+        $query->where('name', 'like', "%{$this->input}%")
+            ->orWhere('id', 'like', "%{$this->input}%");
+    
+    }, 'Text');
 
 });
 
@@ -88,11 +93,15 @@ class ProductController extends AdminController
             }
             return "";
         })->filter($cats);
-        $grid->category_id('category', __('Category'))->display(function($category_id) {
-    return Category::find($category_id)->name;
-})->filter($cats1);
+        $grid->category_id('Subcategory')->display(function($category_id) {
+         $c=Category::find($category_id);
+         return isset($c->name) ? $c->name:'';
+        })->filter($cats1);
       
-        $grid->column('brand.name', __('Brand'))->filter($brands);
+        $grid->brand_id('Brand')->display(function($brand_id) {
+            $c=Brand::find($brand_id);
+            return isset($c->name) ? $c->name:'';
+   })->filter($brands);
           $grid->column('brandcategory_id', __('Brand cat'))->display(function($category_id) {
             $b=brandcategory::find($category_id);
             if($b){
@@ -285,8 +294,9 @@ $grid->actions(function ($actions) {
         
         })->tab('Product Attributes', function ($form) {
             $form->hasMany('property',"Add Product Attributes", function (Form\NestedForm $form) {
+                $form->text('group_heading',"Attribute Group")->default('General');
                 $form->text('property_name',"Product Attribute Name");
-                $form->text('property_value',"Product Attribute Value");
+                $form->ckeditor('property_value',"Product Attribute Value");
             });
                
             })->tab('Product Variants', function ($form) {

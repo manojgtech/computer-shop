@@ -16,6 +16,7 @@ use App\Models\Graphics;
 use App\Models\PreownedPC;
 use Illuminate\Support\Facades\Auth;
 use App\Models\wifi;
+use DB;
 
 class WelcomeController extends Controller
 {
@@ -64,14 +65,33 @@ class WelcomeController extends Controller
          $slug=$request->slug ?? null;
          $data=common::commonData('home');
            
-         $data['processors']=Processor::all();
-         $data['rams']=Ram::all();
-         $data['graphics']=Graphics::all();
-         $data['hdds']=HardDisks::all();
-         $data['wifis']=wifi::all();
+        
          $data['faqs']=null;
          if($slug){
          $data['product']=PreownedPC::where(['slug'=>$slug])->first();
+          $prc=json_decode($data['product']->processors,true);
+          $prc=array_map('intval', $prc);
+        // print_r( $data['product']);
+         $data['processors']=Processor::whereIn("id",$prc)->get();
+         //rams
+        
+         $rms=json_decode($data['product']->ram,true);
+          $rms=array_map('intval', $rms);
+         $data['rams']=Ram::whereIn("id",$rms)->get();
+         //grap
+         
+         $gr=json_decode($data['product']->graphics,true);
+          $gr=array_map('intval', $gr);
+        
+         $data['graphics']=Graphics::whereIn("id",$gr)->get();
+         $hd=json_decode($data['product']->hdd,true);
+         $hd=array_map('intval', $hd);
+       
+         $data['hdds']=HardDisks::whereIn("id",$hd)->get();
+         $wf=json_decode($data['product']->wifi,true);
+         $hd=array_map('intval', $wf);
+       
+         $data['wifis']=wifi::whereIn("id",$wf)->get();
          }else{
             echo "404"; die;
         }

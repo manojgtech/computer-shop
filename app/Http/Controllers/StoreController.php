@@ -11,6 +11,9 @@ use App\Models\widget;
 use App\Models\common;
 use App\Models\attributes;
 use App\Models\faq;
+use App\Models\property;
+use App\Models\banners;
+use App\Models\Wishlist;
 use App\Models\productVariantOptions;
 
 class StoreController extends Controller
@@ -52,14 +55,18 @@ class StoreController extends Controller
     if($q){
         $b=brand::where(['slug'=>$q])->first();
         $name=$b->name;
-      $res=product::where(['brand_id'=>$b->id])->get();
+      $res=product::where(['brand_id'=>$b->id]);
+      $count=$res->count();
+      $res1=$res->get();
     }else{
         $name="";
-        $res=[];
+        $res1=[];
+        $count=0;
     }
 
     $data['name']=$name;
-    $data['products']=$res;
+    $data['products']=$res1;
+    $data['count']=$count;
          return view('brands',$data);
    }
 
@@ -146,13 +153,26 @@ class StoreController extends Controller
     $atts=attributes::all()->pluck('property_name');
     $attributes=$atts->toArray();
     $data=common::commonData('single');
+    $data['ad_banners']=banners::where('position','vertical')->first();
     $slug=isset($request->slug) ? $request->slug:null; 
     if($slug){
         $data['product']=product::where(['slug'=>$slug])->first();
+        if($data['product']){
+            $wish=Wishlist::where(["product_id"=>$data['product']->id])->first();
         $variations=productVariantOptions::where(['product_id'=>$data['product']->id])->whereIn("attribute_name",$attributes)->get()->toArray();
         $data['faqs']=faq::where(['product_id'=>$data['product']->id])->get();
         $vdata=[];
         $i=0;
+        $groups=property::select('group_heading')->where("product_id",$data['product']->id)->groupBy('group_heading')->orderBy('id','asc')->get()->toArray();
+    
+    $atb=[];
+    foreach($groups as $group){
+        $a=property::where("product_id",$data['product']->id)->where('group_heading',$group['group_heading'])->get()->toArray();
+        $atb[$group['group_heading']]=$a;
+    }
+
+    $data['props']=$atb;
+    
         $pranges=null;
         if($variations){
              $pranges= productVariantOptions::where(['product_id'=>$data['product']->id])->selectRaw(" MIN(regular_price) AS minp, MAX(regular_price) AS maxp")->get();
@@ -163,8 +183,13 @@ class StoreController extends Controller
         }else{
           $vdata=null;
         }
+    }else{
+        echo "no product";
+    } 
         
         
+    }else{
+        echo "no product";
     }
     //dd($vdata);
     if(!$data['product']){
@@ -175,9 +200,8 @@ class StoreController extends Controller
     $data['cat']="";
     $data['vars']=$vdata;
     $data['pranges']=$pranges;
-    $data['relprods']=product::where(['maincategory_id'=>$data['product']->maincategory_id])->get();
+    $data['relprods']=product::where(['maincategory_id'=>$data['product']->maincategory_id])->orWhere(['category_id'=>$data['product']->category_id])->get();
     
-
     return view("singleproduct",$data);
    }
 
@@ -191,7 +215,7 @@ class StoreController extends Controller
       return  $query->orWhere("name","like","%".$q."%");
     },'variant'=>function($query) use($q){
         return  $query->orWhere("attribute_value","like","%".$q."%");
-    }])->orWhere('title','like',"%".$q."%")->orWhere('description','like',"%".$q."%")->get();
+    }])->orWhere('title','like',"%".$q."%")->get();
     $data['products']=$res;
          return view('productsearch',$data);
    }

@@ -405,6 +405,6 @@ return [
     |
     */
     'extensions' => [
-
+        
     ],
 ];

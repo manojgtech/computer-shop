@@ -19,14 +19,14 @@ class common extends Model
         $data['cats']=category::all();
         $data['sections']=widget::all()->pluck("content",'name');
         if($page=='home'){
-        $data['home_banners']=banners::where(['name'=>'home_banners'])->get();
-        $data['cat_banner']=banners::where(['name'=>'home_category_banner'])->get();
-        $data['brand_banner']=banners::where(['name'=>'home_brand_banner'])->get();
-        $data['product_banner']=banners::where(['name'=>'home_trending_product_banner'])->get();
+        $data['home_banners']=banners::where(['position'=>'home_slider'])->get();
+        $data['cat_banner']=banners::where(['position'=>'3images'])->get();
+        $data['brand_banner']=banners::inRandomOrder()->where(['position'=>'horizontal'])->first();
+        $data['product_banner']=banners::where(['position'=>'2images'])->get();
         }
         if($page=='brand'){
-          $data['brand_banner1']=banners::where(['name'=>'brand_top_banner'])->get();
-          $data['brand_banner2']=banners::where(['name'=>'brand_left_banner'])->get();
+          $data['brand_banner1']=banners::where(['position'=>'horizontal'])->get();
+          $data['brand_banner2']=banners::where(['position'=>'vertical'])->get();
         }
          $mcats=category::where(['parent_id'=>null])->get();
         $data['quantity']=\Cart::getTotalQuantity();
@@ -43,7 +43,7 @@ class common extends Model
          }else{
            
          }
-        $br=brand::orderBy('id', 'desc')->take(12)->get()->chunk(3);
+        $br=brand::inRandomOrder()->take(12)->get()->chunk(3);
         $data['brandlinks']=$br;
 
         return $data;

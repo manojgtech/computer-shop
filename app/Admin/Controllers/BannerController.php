@@ -28,6 +28,7 @@ class BannerController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
+        $grid->column('position', __('Position'));
         $grid->column('content', __('Content'));
         $grid->column('image', __('image'))->image();
        
@@ -48,6 +49,7 @@ class BannerController extends AdminController
         $show->field('name', __('Name'));
         $show->field('content', __('Content'));
          $show->field('image', __('image'))->image();
+         $show->field('position', __('position'))->image();
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -64,6 +66,7 @@ class BannerController extends AdminController
         $form = new Form(new banners());
 
         $form->text('name', __('Unique Widget Name'));
+        $form->select('position', __('Banner Positions'))->options(['horizonal'=>'horizontal','vertical'=>'vertical','2images'=>'2 images','3images'=>'3 images','home_slider'=>'home_slider']);
         $form->textarea('content', __('Content'));
         $form->image('image', __('Image'))->uniqueName()->move('public/brands/public/brands/widgets/')->removable();
 
